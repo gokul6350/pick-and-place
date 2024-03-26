@@ -5,9 +5,9 @@ import serial
 
 
 base=90+5
-length = 25-9
+length = 25-8
 grup= 60
-grdow=12
+grdow=10
 
 port = "/dev/ttyACM0"
 connection = serial.Serial(port, 9600)
@@ -16,6 +16,15 @@ print(f"Serial {port} is working well")
 
 a1,a2=game.sim_inverse_k(length,3)
 
+def wistangle(a1,a2):
+
+
+    theata=180-a2
+    xtheata=a1+theata
+    xtheata1=xtheata-90
+    wtheata=180-xtheata1
+
+    return wtheata
 
 
 print(a1, a2)
@@ -38,7 +47,9 @@ time.sleep(1)
 time.sleep(0.5)
 connection.write(f"s{x}".encode())
 time.sleep(3.5)
-connection.write(f"w{110}".encode())
+wang=wistangle(x,a2)
+print(wang)
+connection.write(f"w{wang}".encode())
 time.sleep(1.9)
 connection.write(f"g{grdow}".encode())
 time.sleep(1.5)
