@@ -32,42 +32,46 @@ y
 =================x
 
 """
+currentang={"b":10,"s" :110,"e" :110,"f" :90,"w": 180,"g": 60}
 
+def send(ser, ang):
+    connection.write(f"{ser}{ang}".encode())
+    currentang[ser]=ang
 
-def pickup(base,x,y):
-    base=base+5
-    x=x-8
-    a1,a2=game.sim_inverse_k(x,y)
+def pickup(base, x, y):
+    base = base + 5
+    x = x - 8
+    a1, a2 = game.sim_inverse_k(x, y)
     print("=============")
-    print(a1,a2)
+    print(a1, a2)
     print("=============")
     
-    x,a2=-a1,a2
-    connection.write(f"s{120}".encode())
+    x, a2 = -a1, a2
+    send("s", 120)
     time.sleep(0.5)
-    connection.write(f"g{grup}".encode())
+    send("g", grup)
     time.sleep(0.5)
-    connection.write(f"w{180}".encode())
+    send("w", 180)
     time.sleep(0.5)
-    connection.write(f"e{a2}".encode())
+    send("e", a2)
     time.sleep(0.5)
-    connection.write(f"b{base}".encode())
+    send("b", base)
     time.sleep(0.5)
-    connection.write(f"s{x}".encode())
-    wang=wistangle(x,a2)
+    send("s", x)
+    wang = wistangle(x, a2)
     print(wang)
     time.sleep(1)
-    connection.write(f"w{wang}".encode())
+    send("w", wang)
     time.sleep(0.5)
-    connection.write(f"g{grdow}".encode())
+    send("g", grdow)
     time.sleep(0.5)
-    connection.write(f"s{120}".encode())
+    send("s", 120)
 
 base=90
-length = 23
-y=3
+length = 25
+y=7
 grup= 60
-grdow=10
+grdow=0
 if 19>length or 33<length:
     print("""
    ___  _   _ _____    ___  _____   ____      _    _   _  ____ _____         _
@@ -106,41 +110,53 @@ pickup(base,length,y-17)
 #  PLACE A OBJECT        #
 ##########################
 
-def place(base,x,y):
-    base=base+5
-    x=x-8
+def place(base, x, y):
+    base = base + 5
+    x = x - 8
 
-    a1,a2=game.sim_inverse_k(x,y)
+    a1, a2 = game.sim_inverse_k(x, y)
     print("=============")
-    print(a1,a2)
+    print(a1, a2)
     print("=============")
     
-    x,a2=-a1,a2
-    connection.write(f"s{120}".encode())
+    x, a2 = -a1, a2
+    send("s", 120)
     time.sleep(0.5)
    
-
-
     time.sleep(0.5)
-    connection.write(f"e{a2}".encode())
+    send("e", a2)
     time.sleep(0.5)
-    connection.write(f"b{base}".encode())
+    send("b", base)
     time.sleep(0.5)
-    connection.write(f"s{x}".encode())
-    wang=wistangle(x,a2)
+    send("s", x)
+    wang = wistangle(x, a2)
     print(wang)
     time.sleep(1)
-    connection.write(f"w{wang}".encode())
+    send("w", wang)
     time.sleep(0.5)
-    connection.write(f"g{grup}".encode())
+    send("g", grup)
     time.sleep(0.5)
-    connection.write(f"s{120}".encode())    
+    send("s", 120)
+  
 
 #place(45,23,-5) 
-
+print(currentang)
 def openup():
     connection.write(f"g{grup}".encode())
 
 def closedown():
     connection.write(f"g{grdow}".encode())
+
+def move(direction):
+    if direction =="left":
+        send("b",currentang["b"]-5)
+    elif direction =="right":
+        send("b",currentang["b"]+5)
+    elif direction=="up":
+        raise NotImplementedError
+    elif direction=="down":
+        raise NotImplementedError        
+
+#move("left")        
+
 
